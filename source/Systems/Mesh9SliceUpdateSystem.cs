@@ -3,6 +3,7 @@ using Meshes.Components;
 using Meshes.NineSliced.Components;
 using Simulation;
 using System;
+using System.Numerics;
 using Transforms.Components;
 using Worlds;
 
@@ -10,18 +11,18 @@ namespace Meshes.NineSliced.Systems
 {
     public readonly partial struct Mesh9SliceUpdateSystem : ISystem
     {
-        private readonly Dictionary<Entity, LocalToWorld> lastLtwPerEntity;
+        private readonly Dictionary<Entity, Vector3> lastWorldScales;
 
-        private Mesh9SliceUpdateSystem(Dictionary<Entity, LocalToWorld> lastLtw)
+        private Mesh9SliceUpdateSystem(Dictionary<Entity, Vector3> lastLtw)
         {
-            this.lastLtwPerEntity = lastLtw;
+            this.lastWorldScales = lastLtw;
         }
 
         void ISystem.Finish(in SystemContainer systemContainer, in World world)
         {
             if (systemContainer.World == world)
             {
-                lastLtwPerEntity.Dispose();
+                lastWorldScales.Dispose();
             }
         }
 
@@ -41,21 +42,23 @@ namespace Meshes.NineSliced.Systems
                 Entity entity = new(world, r.entity);
                 bool changed;
                 ref LocalToWorld ltw = ref r.component3;
-                ref LocalToWorld lastLtw = ref lastLtwPerEntity.TryGetValue(entity, out bool contains);
+                Vector3 worldScale = ltw.Scale;
+                ref Vector3 lastWorldScale = ref lastWorldScales.TryGetValue(entity, out bool contains);
                 if (contains)
                 {
-                    changed = lastLtw != ltw;
-                    lastLtw = ltw;
+                    changed = lastWorldScale != worldScale;
+                    lastWorldScale = worldScale;
                 }
                 else
                 {
                     changed = true;
-                    lastLtwPerEntity.Add(entity, ltw);
+                    lastWorldScales.Add(entity, worldScale);
                 }
 
                 if (changed)
                 {
-                    entity.As<Mesh9Sliced>().UpdateVerticesAndUVs();
+                    ref Mesh9SliceSettings settings = ref r.component2;
+                    entity.As<Mesh9Sliced>().UpdateVerticesAndUVs(settings.geometryMargins, settings.uvMargins, worldScale);
                 }
             }
         }
