@@ -1,6 +1,7 @@
 ﻿using Meshes.Components;
 using Meshes.NineSliced.Components;
 using Meshes.NineSliced.Systems;
+using Meshes.Tests;
 using Simulation;
 using Simulation.Components;
 using System.Numerics;
@@ -8,41 +9,46 @@ using Transforms;
 using Transforms.Components;
 using Transforms.Systems;
 using Unmanaged;
-using Unmanaged.Tests;
 using Worlds;
 
 namespace Meshes.NineSliced.Tests
 {
-    public class SlicedMeshTests : UnmanagedTests
+    public class SlicedMeshTests : MeshTests
     {
+        static SlicedMeshTests()
+        {
+            TypeLayout.Register<IsProgram>("IsProgram");
+            TypeLayout.Register<IsTransform>("IsTransform");
+            TypeLayout.Register<Position>("Position");
+            TypeLayout.Register<Rotation>("Rotation");
+            TypeLayout.Register<WorldRotation>("WorldRotation");
+            TypeLayout.Register<EulerAngles>("EulerAngles");
+            TypeLayout.Register<Scale>("Scale");
+            TypeLayout.Register<Anchor>("Anchor");
+            TypeLayout.Register<Pivot>("Pivot");
+            TypeLayout.Register<LocalToWorld>("LocalToWorld");
+            TypeLayout.Register<Mesh9SliceSettings>("Mesh9SliceSettings");
+        }
+
         protected override void SetUp()
         {
             base.SetUp();
-            ComponentType.Register<IsProgram>();
-            ComponentType.Register<IsTransform>();
-            ComponentType.Register<Position>();
-            ComponentType.Register<Rotation>();
-            ComponentType.Register<WorldRotation>();
-            ComponentType.Register<EulerAngles>();
-            ComponentType.Register<Scale>();
-            ComponentType.Register<Anchor>();
-            ComponentType.Register<Pivot>();
-            ComponentType.Register<LocalToWorld>();
-            ComponentType.Register<IsMesh>();
-            ComponentType.Register<Mesh9SliceSettings>();
-            ArrayType.Register<MeshVertexPosition>();
-            ArrayType.Register<MeshVertexNormal>();
-            ArrayType.Register<MeshVertexUV>();
-            ArrayType.Register<MeshVertexColor>();
-            ArrayType.Register<MeshVertexTangent>();
-            ArrayType.Register<MeshVertexBiTangent>();
-            ArrayType.Register<MeshVertexIndex>();
+            world.Schema.RegisterComponent<IsProgram>();
+            world.Schema.RegisterComponent<IsTransform>();
+            world.Schema.RegisterComponent<Position>();
+            world.Schema.RegisterComponent<Rotation>();
+            world.Schema.RegisterComponent<WorldRotation>();
+            world.Schema.RegisterComponent<EulerAngles>();
+            world.Schema.RegisterComponent<Scale>();
+            world.Schema.RegisterComponent<Anchor>();
+            world.Schema.RegisterComponent<Pivot>();
+            world.Schema.RegisterComponent<LocalToWorld>();
+            world.Schema.RegisterComponent<Mesh9SliceSettings>();
         }
 
         [Test]
         public void BuildDefaultSlicedMesh()
         {
-            using World world = new();
             Mesh9Sliced mesh = new(world, new(0.5f, 0.5f, 0.5f, 0.5f), new(0.5f, 0.5f, 0.5f, 0.5f));
             Assert.That(mesh.GeometryMargins, Is.EqualTo(new Vector4(0.5f, 0.5f, 0.5f, 0.5f)));
             Assert.That(mesh.UVMargins, Is.EqualTo(new Vector4(0.5f, 0.5f, 0.5f, 0.5f)));
@@ -96,7 +102,6 @@ namespace Meshes.NineSliced.Tests
         public void BuildSubtleSlicedMesh()
         {
             const float Third = 1f / 3f;
-            using World world = new();
             Mesh9Sliced mesh = new(world, new(0.1f), new(Third));
 
             uint vertexCount = mesh.GetVertexCount();
@@ -147,7 +152,6 @@ namespace Meshes.NineSliced.Tests
         [Test]
         public void ScaledDefaultSlicedMesh()
         {
-            using World world = new();
             using Simulator simulator = new(world);
             simulator.AddSystem<TransformSystem>();
             simulator.AddSystem<Mesh9SliceUpdateSystem>();

@@ -23,7 +23,11 @@ namespace Meshes.NineSliced
 
         readonly uint IEntity.Value => mesh.GetEntityValue();
         readonly World IEntity.World => mesh.GetWorld();
-        readonly Definition IEntity.Definition => Definition.Get<Mesh>().AddComponentType<Mesh9SliceSettings>();
+
+        readonly Definition IEntity.GetDefinition(Schema schema)
+        {
+            return Definition.Get<Mesh>(schema).AddComponentType<Mesh9SliceSettings>(schema);
+        }
 
 #if NET
         [Obsolete("Default constructor not supported", true)]
