@@ -33,8 +33,8 @@ namespace Meshes.NineSliced.Tests
         protected override void SetUp()
         {
             base.SetUp();
+            world.Schema.RegisterTag<IsTransform>();
             world.Schema.RegisterComponent<IsProgram>();
-            world.Schema.RegisterComponent<IsTransform>();
             world.Schema.RegisterComponent<Position>();
             world.Schema.RegisterComponent<Rotation>();
             world.Schema.RegisterComponent<WorldRotation>();
