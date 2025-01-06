@@ -24,9 +24,9 @@ namespace Meshes.NineSliced
         readonly uint IEntity.Value => mesh.GetEntityValue();
         readonly World IEntity.World => mesh.GetWorld();
 
-        readonly Definition IEntity.GetDefinition(Schema schema)
+        readonly void IEntity.Describe(ref Archetype archetype)
         {
-            return Definition.Get<Mesh>(schema).AddComponentType<Mesh9SliceSettings>(schema);
+            archetype.AddComponentType<Mesh9SliceSettings>();
         }
 
 #if NET
