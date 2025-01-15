@@ -1,5 +1,4 @@
-﻿using Meshes.Components;
-using Meshes.NineSliced.Components;
+﻿using Meshes.NineSliced.Components;
 using Meshes.NineSliced.Systems;
 using Meshes.Tests;
 using Simulation;
@@ -8,6 +7,7 @@ using System.Numerics;
 using Transforms;
 using Transforms.Components;
 using Transforms.Systems;
+using Types;
 using Unmanaged;
 using Worlds;
 
