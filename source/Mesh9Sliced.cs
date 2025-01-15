@@ -78,7 +78,7 @@ namespace Meshes.NineSliced
         }
 
         /// <summary>
-        /// Updates this 9 sliced mesh.
+        /// Updates this 9 sliced mesh to match the given margins with respect to scale.
         /// </summary>
         public readonly void UpdateVerticesAndUVs(Vector4 geometryMargins, Vector4 uvMargins, Vector3 worldScale)
         {
