@@ -49,7 +49,7 @@ namespace Meshes.NineSliced
             USpan<Vector2> uvs = mesh.CreateUVs(16);
             GetVerticesAndUVs(vertices, uvs, geometryMargins, uvMargins);
             USpan<uint> indices = mesh.ResizeIndices((16 * 3) + 6);
-            GetTriangles(indices);
+            CopyTrianglesTo(indices);
             mesh.AddComponent(new Mesh9SliceSettings(geometryMargins, uvMargins));
         }
 
@@ -107,9 +107,10 @@ namespace Meshes.NineSliced
             }
         }
 
-        public static void GetTriangles(USpan<uint> triangles)
+        public static uint CopyTrianglesTo(USpan<uint> triangles)
         {
-            indices.AsUSpan().CopyTo(triangles);
+            indices.CopyTo(triangles);
+            return (uint)indices.Length;
         }
 
         public static implicit operator Entity(Mesh9Sliced mesh9Sliced)
