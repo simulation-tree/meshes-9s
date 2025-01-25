@@ -14,7 +14,7 @@ namespace Meshes.NineSliced.Tests
     {
         static SlicedMeshTests()
         {
-            TypeRegistry.Load<Simulation.TypeBank>();
+            TypeRegistry.Load<Simulation.Core.TypeBank>();
             TypeRegistry.Load<Transforms.TypeBank>();
             TypeRegistry.Load<Meshes.NineSliced.TypeBank>();
         }
@@ -22,7 +22,7 @@ namespace Meshes.NineSliced.Tests
         protected override Schema CreateSchema()
         {
             Schema schema = base.CreateSchema();
-            schema.Load<Simulation.SchemaBank>();
+            schema.Load<Simulation.Core.SchemaBank>();
             schema.Load<Transforms.SchemaBank>();
             schema.Load<Meshes.NineSliced.SchemaBank>();
             return schema;
