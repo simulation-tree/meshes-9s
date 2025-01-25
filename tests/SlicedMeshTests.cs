@@ -17,33 +17,18 @@ namespace Meshes.NineSliced.Tests
     {
         static SlicedMeshTests()
         {
-            TypeLayout.Register<IsProgram>();
-            TypeLayout.Register<IsTransform>();
-            TypeLayout.Register<Position>();
-            TypeLayout.Register<Rotation>();
-            TypeLayout.Register<WorldRotation>();
-            TypeLayout.Register<EulerAngles>();
-            TypeLayout.Register<Scale>();
-            TypeLayout.Register<Anchor>();
-            TypeLayout.Register<Pivot>();
-            TypeLayout.Register<LocalToWorld>();
-            TypeLayout.Register<Mesh9SliceSettings>();
+            TypeRegistry.Load<Simulation.TypeBank>();
+            TypeRegistry.Load<Transforms.TypeBank>();
+            TypeRegistry.Load<Meshes.NineSliced.TypeBank>();
         }
 
-        protected override void SetUp()
+        protected override Schema CreateSchema()
         {
-            base.SetUp();
-            world.Schema.RegisterTag<IsTransform>();
-            world.Schema.RegisterComponent<IsProgram>();
-            world.Schema.RegisterComponent<Position>();
-            world.Schema.RegisterComponent<Rotation>();
-            world.Schema.RegisterComponent<WorldRotation>();
-            world.Schema.RegisterComponent<EulerAngles>();
-            world.Schema.RegisterComponent<Scale>();
-            world.Schema.RegisterComponent<Anchor>();
-            world.Schema.RegisterComponent<Pivot>();
-            world.Schema.RegisterComponent<LocalToWorld>();
-            world.Schema.RegisterComponent<Mesh9SliceSettings>();
+            Schema schema = base.CreateSchema();
+            schema.Load<Simulation.SchemaBank>();
+            schema.Load<Transforms.SchemaBank>();
+            schema.Load<Meshes.NineSliced.SchemaBank>();
+            return schema;
         }
 
         [Test]
