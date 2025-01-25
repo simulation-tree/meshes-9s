@@ -1,11 +1,8 @@
-﻿using Meshes.NineSliced.Components;
-using Meshes.NineSliced.Systems;
+﻿using Meshes.NineSliced.Systems;
 using Meshes.Tests;
 using Simulation;
-using Simulation.Components;
 using System.Numerics;
 using Transforms;
-using Transforms.Components;
 using Transforms.Systems;
 using Types;
 using Unmanaged;
@@ -34,6 +31,7 @@ namespace Meshes.NineSliced.Tests
         [Test]
         public void BuildDefaultSlicedMesh()
         {
+            using World world = CreateWorld();
             Mesh9Sliced mesh = new(world, new(0.5f, 0.5f, 0.5f, 0.5f), new(0.5f, 0.5f, 0.5f, 0.5f));
             Assert.That(mesh.GeometryMargins, Is.EqualTo(new Vector4(0.5f, 0.5f, 0.5f, 0.5f)));
             Assert.That(mesh.UVMargins, Is.EqualTo(new Vector4(0.5f, 0.5f, 0.5f, 0.5f)));
@@ -86,6 +84,7 @@ namespace Meshes.NineSliced.Tests
         [Test]
         public void BuildSubtleSlicedMesh()
         {
+            using World world = CreateWorld();
             const float Third = 1f / 3f;
             Mesh9Sliced mesh = new(world, new(0.1f), new(Third));
 
@@ -137,6 +136,7 @@ namespace Meshes.NineSliced.Tests
         [Test]
         public void ScaledDefaultSlicedMesh()
         {
+            using World world = CreateWorld();
             using Simulator simulator = new(world);
             simulator.AddSystem<TransformSystem>();
             simulator.AddSystem<Mesh9SliceUpdateSystem>();
