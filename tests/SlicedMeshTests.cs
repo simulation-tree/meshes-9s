@@ -32,13 +32,14 @@ namespace Meshes.NineSliced.Tests
         public void BuildDefaultSlicedMesh()
         {
             using World world = CreateWorld();
-            Mesh9Sliced mesh = new(world, new(0.5f, 0.5f, 0.5f, 0.5f), new(0.5f, 0.5f, 0.5f, 0.5f));
-            Assert.That(mesh.GeometryMargins, Is.EqualTo(new Vector4(0.5f, 0.5f, 0.5f, 0.5f)));
-            Assert.That(mesh.UVMargins, Is.EqualTo(new Vector4(0.5f, 0.5f, 0.5f, 0.5f)));
+            Mesh9Sliced slicedMesh = new(world, new(0.5f, 0.5f, 0.5f, 0.5f), new(0.5f, 0.5f, 0.5f, 0.5f));
+            Assert.That(slicedMesh.GeometryMargins, Is.EqualTo(new Vector4(0.5f, 0.5f, 0.5f, 0.5f)));
+            Assert.That(slicedMesh.UVMargins, Is.EqualTo(new Vector4(0.5f, 0.5f, 0.5f, 0.5f)));
 
-            uint vertexCount = mesh.GetVertexCount();
-            USpan<Vector3> positions = mesh.GetVertexPositions();
-            USpan<Vector2> uvs = mesh.GetVertexUVs();
+            Mesh mesh = slicedMesh;
+            uint vertexCount = mesh.VertexCount;
+            USpan<Vector3> positions = mesh.Positions;
+            USpan<Vector2> uvs = mesh.UVs;
 
             //first row
             AssertVectorEquality(positions[0], new Vector3(0f, 0f, 0f));
@@ -86,11 +87,11 @@ namespace Meshes.NineSliced.Tests
         {
             using World world = CreateWorld();
             const float Third = 1f / 3f;
-            Mesh9Sliced mesh = new(world, new(0.1f), new(Third));
+            Mesh mesh = new Mesh9Sliced(world, new(0.1f), new(Third));
 
-            uint vertexCount = mesh.GetVertexCount();
-            USpan<Vector3> positions = mesh.GetVertexPositions();
-            USpan<Vector2> uvs = mesh.GetVertexUVs();
+            uint vertexCount = mesh.VertexCount;
+            USpan<Vector3> positions = mesh.Positions;
+            USpan<Vector2> uvs = mesh.UVs;
 
             //first row
             AssertVectorEquality(positions[0], new Vector3(0f, 0f, 0f));
@@ -141,18 +142,19 @@ namespace Meshes.NineSliced.Tests
             simulator.AddSystem<TransformSystem>();
             simulator.AddSystem<Mesh9SliceUpdateSystem>();
 
-            Mesh9Sliced mesh = new(world, new(0.5f, 0.5f, 0.5f, 0.5f), new(0.5f, 0.5f, 0.5f, 0.5f));
-            Transform meshTransform = mesh.AsEntity().Become<Transform>();
+            Mesh9Sliced slicedMesh = new(world, new(0.5f, 0.5f, 0.5f, 0.5f), new(0.5f, 0.5f, 0.5f, 0.5f));
+            Transform meshTransform = slicedMesh.Become<Transform>();
             meshTransform.LocalScale = new Vector3(4f, 2f, 2f);
 
             simulator.Update();
 
-            Assert.That(mesh.GeometryMargins, Is.EqualTo(new Vector4(0.5f, 0.5f, 0.5f, 0.5f)));
-            Assert.That(mesh.UVMargins, Is.EqualTo(new Vector4(0.5f, 0.5f, 0.5f, 0.5f)));
+            Assert.That(slicedMesh.GeometryMargins, Is.EqualTo(new Vector4(0.5f, 0.5f, 0.5f, 0.5f)));
+            Assert.That(slicedMesh.UVMargins, Is.EqualTo(new Vector4(0.5f, 0.5f, 0.5f, 0.5f)));
 
-            uint vertexCount = mesh.GetVertexCount();
-            USpan<Vector3> positions = mesh.GetVertexPositions();
-            USpan<Vector2> uvs = mesh.GetVertexUVs();
+            Mesh mesh = slicedMesh;
+            uint vertexCount = mesh.VertexCount;
+            USpan<Vector3> positions = mesh.Positions;
+            USpan<Vector2> uvs = mesh.UVs;
 
             AssertVectorEquality(positions[0], new Vector3(0f, 0f, 0f));
             AssertVectorEquality(positions[1], new Vector3(0.125f, 0f, 0f));

@@ -7,7 +7,7 @@ using Worlds;
 
 namespace Meshes.NineSliced
 {
-    public readonly struct Mesh9Sliced : IMesh
+    public readonly partial struct Mesh9Sliced : IEntity
     {
         private static readonly uint[] indices =
         [
@@ -16,46 +16,27 @@ namespace Meshes.NineSliced
             8, 9, 12, 12, 9, 13, 9, 10, 13, 13, 10, 14, 10, 11, 14, 14, 11, 15
         ];
 
-        private readonly Mesh mesh;
+        public readonly ref Vector4 GeometryMargins => ref GetComponent<Mesh9SliceSettings>().geometryMargins;
+        public readonly ref Vector4 UVMargins => ref GetComponent<Mesh9SliceSettings>().uvMargins;
 
-        public readonly ref Vector4 GeometryMargins => ref mesh.AsEntity().GetComponent<Mesh9SliceSettings>().geometryMargins;
-        public readonly ref Vector4 UVMargins => ref mesh.AsEntity().GetComponent<Mesh9SliceSettings>().uvMargins;
+        public Mesh9Sliced(World world, Vector4 geometryMargins, Vector4 uvMargins)
+        {
+            USpan<Vector4> colors = stackalloc Vector4[16];
+            colors.Fill(new Vector4(1, 1, 1, 1));
+            USpan<Vector3> vertices = stackalloc Vector3[16];
+            USpan<Vector2> uvs = stackalloc Vector2[16];
+            USpan<uint> indices = stackalloc uint[(16 * 3) + 6];
+            CopyVerticesAndUVsTo(vertices, uvs, geometryMargins, uvMargins);
+            CopyTrianglesTo(indices);
 
-        readonly uint IEntity.Value => mesh.GetEntityValue();
-        readonly World IEntity.World => mesh.GetWorld();
+            this.world = world;
+            value = new Mesh(world, vertices, uvs, colors, indices).value;
+            AddComponent(new Mesh9SliceSettings(geometryMargins, uvMargins));
+        }
 
         readonly void IEntity.Describe(ref Archetype archetype)
         {
             archetype.AddComponentType<Mesh9SliceSettings>();
-        }
-
-#if NET
-        [Obsolete("Default constructor not supported", true)]
-        public Mesh9Sliced()
-        {
-            throw new NotSupportedException();
-        }
-#endif
-        public Mesh9Sliced(World world, Vector4 geometryMargins, Vector4 uvMargins)
-        {
-            mesh = new Mesh(world);
-            USpan<Vector4> colors = mesh.CreateColors(16);
-            for (uint i = 0; i < 16; i++)
-            {
-                colors[i] = new Vector4(1, 1, 1, 1);
-            }
-
-            USpan<Vector3> vertices = mesh.CreatePositions(16);
-            USpan<Vector2> uvs = mesh.CreateUVs(16);
-            GetVerticesAndUVs(vertices, uvs, geometryMargins, uvMargins);
-            USpan<uint> indices = mesh.ResizeIndices((16 * 3) + 6);
-            CopyTrianglesTo(indices);
-            mesh.AddComponent(new Mesh9SliceSettings(geometryMargins, uvMargins));
-        }
-
-        public readonly void Dispose()
-        {
-            mesh.Dispose();
         }
 
         /// <summary>
@@ -63,8 +44,9 @@ namespace Meshes.NineSliced
         /// </summary>
         public readonly void UpdateVerticesAndUVs()
         {
-            ref LocalToWorld ltw = ref mesh.AsEntity().TryGetComponent<LocalToWorld>(out bool containsLtw);
-            ref Mesh9SliceSettings settings = ref mesh.AsEntity().GetComponent<Mesh9SliceSettings>();
+            Mesh mesh = As<Mesh>();
+            ref LocalToWorld ltw = ref mesh.TryGetComponent<LocalToWorld>(out bool containsLtw);
+            ref Mesh9SliceSettings settings = ref mesh.GetComponent<Mesh9SliceSettings>();
             Vector4 geometryMargins = settings.geometryMargins;
             Vector4 uvMargins = settings.uvMargins;
             if (containsLtw)
@@ -86,13 +68,15 @@ namespace Meshes.NineSliced
             geometryMargins.Y /= worldScale.X;
             geometryMargins.Z /= worldScale.Y;
             geometryMargins.W /= worldScale.Y;
-            USpan<Vector3> vertices = mesh.GetVertexPositions();
-            USpan<Vector2> uvs = mesh.GetVertexUVs();
-            GetVerticesAndUVs(vertices, uvs, geometryMargins, uvMargins);
+
+            Mesh mesh = As<Mesh>();
+            USpan<Vector3> vertices = mesh.Positions;
+            USpan<Vector2> uvs = mesh.UVs;
+            CopyVerticesAndUVsTo(vertices, uvs, geometryMargins, uvMargins);
             mesh.IncrementVersion();
         }
 
-        public static void GetVerticesAndUVs(USpan<Vector3> vertices, USpan<Vector2> uvs, Vector4 geometryMargins, Vector4 uvMargins)
+        public static void CopyVerticesAndUVsTo(USpan<Vector3> vertices, USpan<Vector2> uvs, Vector4 geometryMargins, Vector4 uvMargins)
         {
             USpan<float> xVertexValues = [0, geometryMargins.X, 1 - geometryMargins.Y, 1];
             USpan<float> yVertexValues = [0, geometryMargins.Z, 1 - geometryMargins.W, 1];
@@ -113,14 +97,9 @@ namespace Meshes.NineSliced
             return (uint)indices.Length;
         }
 
-        public static implicit operator Entity(Mesh9Sliced mesh9Sliced)
-        {
-            return mesh9Sliced.mesh;
-        }
-
         public static implicit operator Mesh(Mesh9Sliced mesh9Sliced)
         {
-            return mesh9Sliced.mesh;
+            return mesh9Sliced.As<Mesh>();
         }
     }
 }
