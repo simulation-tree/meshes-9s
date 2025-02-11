@@ -1,6 +1,7 @@
 ﻿using Meshes.NineSliced.Components;
 using System;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 using Transforms.Components;
 using Unmanaged;
 using Worlds;
@@ -19,6 +20,7 @@ namespace Meshes.NineSliced
         public readonly ref Vector4 GeometryMargins => ref GetComponent<Mesh9SliceSettings>().geometryMargins;
         public readonly ref Vector4 UVMargins => ref GetComponent<Mesh9SliceSettings>().uvMargins;
 
+        [SkipLocalsInit]
         public Mesh9Sliced(World world, Vector4 geometryMargins, Vector4 uvMargins)
         {
             USpan<Vector4> colors = stackalloc Vector4[16];
