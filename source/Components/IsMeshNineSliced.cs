@@ -1,9 +1,7 @@
 ﻿using System.Numerics;
-using Worlds;
 
 namespace Meshes.NineSliced.Components
 {
-    [Component]
     public struct Mesh9SliceSettings
     {
         public Vector4 geometryMargins;
