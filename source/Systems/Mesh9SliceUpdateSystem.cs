@@ -1,4 +1,4 @@
-﻿using Collections;
+﻿using Collections.Generic;
 using Meshes.Components;
 using Meshes.NineSliced.Components;
 using Simulation;
