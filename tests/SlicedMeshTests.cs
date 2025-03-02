@@ -38,8 +38,8 @@ namespace Meshes.NineSliced.Tests
 
             Mesh mesh = slicedMesh;
             uint vertexCount = mesh.VertexCount;
-            USpan<Vector3> positions = mesh.Positions;
-            USpan<Vector2> uvs = mesh.UVs;
+            Mesh.Collection<Vector3> positions = mesh.Positions;
+            Mesh.Collection<Vector2> uvs = mesh.UVs;
 
             //first row
             AssertVectorEquality(positions[0], new Vector3(0f, 0f, 0f));
@@ -90,8 +90,8 @@ namespace Meshes.NineSliced.Tests
             Mesh mesh = new Mesh9Sliced(world, new(0.1f), new(Third));
 
             uint vertexCount = mesh.VertexCount;
-            USpan<Vector3> positions = mesh.Positions;
-            USpan<Vector2> uvs = mesh.UVs;
+            Mesh.Collection<Vector3> positions = mesh.Positions;
+            Mesh.Collection<Vector2> uvs = mesh.UVs;
 
             //first row
             AssertVectorEquality(positions[0], new Vector3(0f, 0f, 0f));
@@ -153,8 +153,8 @@ namespace Meshes.NineSliced.Tests
 
             Mesh mesh = slicedMesh;
             uint vertexCount = mesh.VertexCount;
-            USpan<Vector3> positions = mesh.Positions;
-            USpan<Vector2> uvs = mesh.UVs;
+            Mesh.Collection<Vector3> positions = mesh.Positions;
+            Mesh.Collection<Vector2> uvs = mesh.UVs;
 
             AssertVectorEquality(positions[0], new Vector3(0f, 0f, 0f));
             AssertVectorEquality(positions[1], new Vector3(0.125f, 0f, 0f));
