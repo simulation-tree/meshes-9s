@@ -9,8 +9,8 @@
         <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
         <Title>Meshes Nine Sliced</Title>
         <Authors>popcron</Authors>
-        <Company>game-simulations</Company>
-        <RepositoryUrl>https://github.com/game-simulations/meshes-9s</RepositoryUrl>
+        <Company>simulation-tree</Company>
+        <RepositoryUrl>https://github.com/simulation-tree/meshes-9s</RepositoryUrl>
         <PackageId/>
     </PropertyGroup>
 
