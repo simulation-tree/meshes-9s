@@ -3,7 +3,6 @@ using System;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using Transforms.Components;
-using Unmanaged;
 using Worlds;
 
 namespace Meshes.NineSliced
@@ -23,11 +22,11 @@ namespace Meshes.NineSliced
         [SkipLocalsInit]
         public Mesh9Sliced(World world, Vector4 geometryMargins, Vector4 uvMargins)
         {
-            USpan<Vector4> colors = stackalloc Vector4[16];
+            System.Span<Vector4> colors = stackalloc Vector4[16];
             colors.Fill(new Vector4(1, 1, 1, 1));
-            USpan<Vector3> vertices = stackalloc Vector3[16];
-            USpan<Vector2> uvs = stackalloc Vector2[16];
-            USpan<uint> indices = stackalloc uint[(16 * 3) + 6];
+            System.Span<Vector3> vertices = stackalloc Vector3[16];
+            System.Span<Vector2> uvs = stackalloc Vector2[16];
+            System.Span<uint> indices = stackalloc uint[(16 * 3) + 6];
             CopyVerticesAndUVsTo(vertices, uvs, geometryMargins, uvMargins);
             CopyTrianglesTo(indices);
 
@@ -78,25 +77,25 @@ namespace Meshes.NineSliced
             mesh.IncrementVersion();
         }
 
-        public static void CopyVerticesAndUVsTo(USpan<Vector3> vertices, USpan<Vector2> uvs, Vector4 geometryMargins, Vector4 uvMargins)
+        public static void CopyVerticesAndUVsTo(Span<Vector3> vertices, Span<Vector2> uvs, Vector4 geometryMargins, Vector4 uvMargins)
         {
-            USpan<float> xVertexValues = [0, geometryMargins.X, 1 - geometryMargins.Y, 1];
-            USpan<float> yVertexValues = [0, geometryMargins.Z, 1 - geometryMargins.W, 1];
-            USpan<float> xUVValues = [0, uvMargins.X, 1 - uvMargins.Y, 1];
-            USpan<float> yUVValues = [0, uvMargins.Z, 1 - uvMargins.W, 1];
-            for (uint vertexIndex = 0; vertexIndex < 16; vertexIndex++)
+            ReadOnlySpan<float> xVertexValues = [0, geometryMargins.X, 1 - geometryMargins.Y, 1];
+            ReadOnlySpan<float> yVertexValues = [0, geometryMargins.Z, 1 - geometryMargins.W, 1];
+            ReadOnlySpan<float> xUVValues = [0, uvMargins.X, 1 - uvMargins.Y, 1];
+            ReadOnlySpan<float> yUVValues = [0, uvMargins.Z, 1 - uvMargins.W, 1];
+            for (int vertexIndex = 0; vertexIndex < 16; vertexIndex++)
             {
-                uint x = vertexIndex % 4;
-                uint y = vertexIndex / 4;
+                int x = vertexIndex % 4;
+                int y = vertexIndex / 4;
                 vertices[vertexIndex] = new(xVertexValues[x], yVertexValues[y], 0);
                 uvs[vertexIndex] = new(xUVValues[x], yUVValues[y]);
             }
         }
 
-        public static uint CopyTrianglesTo(USpan<uint> triangles)
+        public static int CopyTrianglesTo(Span<uint> triangles)
         {
             indices.CopyTo(triangles);
-            return (uint)indices.Length;
+            return indices.Length;
         }
 
         public static implicit operator Mesh(Mesh9Sliced mesh9Sliced)

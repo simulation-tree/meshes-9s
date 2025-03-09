@@ -37,7 +37,7 @@ namespace Meshes.NineSliced.Tests
             Assert.That(slicedMesh.UVMargins, Is.EqualTo(new Vector4(0.5f, 0.5f, 0.5f, 0.5f)));
 
             Mesh mesh = slicedMesh;
-            uint vertexCount = mesh.VertexCount;
+            int vertexCount = mesh.VertexCount;
             Mesh.Collection<Vector3> positions = mesh.Positions;
             Mesh.Collection<Vector2> uvs = mesh.UVs;
 
@@ -89,7 +89,7 @@ namespace Meshes.NineSliced.Tests
             const float Third = 1f / 3f;
             Mesh mesh = new Mesh9Sliced(world, new(0.1f), new(Third));
 
-            uint vertexCount = mesh.VertexCount;
+            int vertexCount = mesh.VertexCount;
             Mesh.Collection<Vector3> positions = mesh.Positions;
             Mesh.Collection<Vector2> uvs = mesh.UVs;
 
@@ -152,7 +152,7 @@ namespace Meshes.NineSliced.Tests
             Assert.That(slicedMesh.UVMargins, Is.EqualTo(new Vector4(0.5f, 0.5f, 0.5f, 0.5f)));
 
             Mesh mesh = slicedMesh;
-            uint vertexCount = mesh.VertexCount;
+            int vertexCount = mesh.VertexCount;
             Mesh.Collection<Vector3> positions = mesh.Positions;
             Mesh.Collection<Vector2> uvs = mesh.UVs;
 
