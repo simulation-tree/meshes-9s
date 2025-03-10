@@ -22,11 +22,11 @@ namespace Meshes.NineSliced
         [SkipLocalsInit]
         public Mesh9Sliced(World world, Vector4 geometryMargins, Vector4 uvMargins)
         {
-            System.Span<Vector4> colors = stackalloc Vector4[16];
+            Span<Vector4> colors = stackalloc Vector4[16];
             colors.Fill(new Vector4(1, 1, 1, 1));
-            System.Span<Vector3> vertices = stackalloc Vector3[16];
-            System.Span<Vector2> uvs = stackalloc Vector2[16];
-            System.Span<uint> indices = stackalloc uint[(16 * 3) + 6];
+            Span<Vector3> vertices = stackalloc Vector3[16];
+            Span<Vector2> uvs = stackalloc Vector2[16];
+            Span<uint> indices = stackalloc uint[(16 * 3) + 6];
             CopyVerticesAndUVsTo(vertices, uvs, geometryMargins, uvMargins);
             CopyTrianglesTo(indices);
 
