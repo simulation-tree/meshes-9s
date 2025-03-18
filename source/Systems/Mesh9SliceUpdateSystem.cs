@@ -13,28 +13,21 @@ namespace Meshes.NineSliced.Systems
     {
         private readonly Dictionary<Entity, Vector3> lastWorldScales;
 
-        private Mesh9SliceUpdateSystem(Dictionary<Entity, Vector3> lastLtw)
+        public Mesh9SliceUpdateSystem()
         {
-            this.lastWorldScales = lastLtw;
+            lastWorldScales = new(4);
         }
 
-        void ISystem.Finish(in SystemContainer systemContainer, in World world)
+        public readonly void Dispose()
         {
-            if (systemContainer.World == world)
-            {
-                lastWorldScales.Dispose();
-            }
+            lastWorldScales.Dispose();
         }
 
-        void ISystem.Start(in SystemContainer systemContainer, in World world)
+        readonly void ISystem.Start(in SystemContext context, in World world)
         {
-            if (systemContainer.World == world)
-            {
-                systemContainer.Write(new Mesh9SliceUpdateSystem(new()));
-            }
         }
 
-        void ISystem.Update(in SystemContainer systemContainer, in World world, in TimeSpan delta)
+        readonly void ISystem.Update(in SystemContext context, in World world, in TimeSpan delta)
         {
             ComponentQuery<IsMesh, Mesh9SliceSettings, LocalToWorld> query = new(world);
             foreach (var r in query)
@@ -61,6 +54,10 @@ namespace Meshes.NineSliced.Systems
                     entity.As<Mesh9Sliced>().UpdateVerticesAndUVs(settings.geometryMargins, settings.uvMargins, worldScale);
                 }
             }
+        }
+
+        readonly void ISystem.Finish(in SystemContext context, in World world)
+        {
         }
     }
 }

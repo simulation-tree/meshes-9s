@@ -139,8 +139,8 @@ namespace Meshes.NineSliced.Tests
         {
             using World world = CreateWorld();
             using Simulator simulator = new(world);
-            simulator.AddSystem<TransformSystem>();
-            simulator.AddSystem<Mesh9SliceUpdateSystem>();
+            simulator.AddSystem(new TransformSystem());
+            simulator.AddSystem(new Mesh9SliceUpdateSystem());
 
             Mesh9Sliced slicedMesh = new(world, new(0.5f, 0.5f, 0.5f, 0.5f), new(0.5f, 0.5f, 0.5f, 0.5f));
             Transform meshTransform = slicedMesh.Become<Transform>();
