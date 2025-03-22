@@ -14,9 +14,9 @@ namespace Meshes.NineSliced.Tests
     {
         static SlicedMeshTests()
         {
-            TypeRegistry.Load<SimulationTypeBank>();
-            TypeRegistry.Load<TransformsTypeBank>();
-            TypeRegistry.Load<MeshesNineSlicedTypeBank>();
+            MetadataRegistry.Load<SimulationTypeBank>();
+            MetadataRegistry.Load<TransformsTypeBank>();
+            MetadataRegistry.Load<MeshesNineSlicedTypeBank>();
         }
 
         protected override Schema CreateSchema()
