@@ -5,7 +5,6 @@ using System.Numerics;
 using Transforms;
 using Transforms.Systems;
 using Types;
-using Unmanaged;
 using Worlds;
 
 namespace Meshes.NineSliced.Tests
