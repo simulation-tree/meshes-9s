@@ -71,9 +71,9 @@ namespace Meshes.NineSliced
             geometryMargins.W /= worldScale.Y;
 
             Mesh mesh = As<Mesh>();
-            Mesh.Collection<Vector3> vertices = mesh.Positions;
-            Mesh.Collection<Vector2> uvs = mesh.UVs;
-            CopyVerticesAndUVsTo(vertices.AsSpan(), uvs.AsSpan(), geometryMargins, uvMargins);
+            Span<Vector3> vertices = mesh.Positions;
+            Span<Vector2> uvs = mesh.UVs;
+            CopyVerticesAndUVsTo(vertices, uvs, geometryMargins, uvMargins);
             mesh.IncrementVersion();
         }
 

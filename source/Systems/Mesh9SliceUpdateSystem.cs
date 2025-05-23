@@ -9,7 +9,7 @@ using Worlds;
 
 namespace Meshes.NineSliced.Systems
 {
-    public readonly partial struct Mesh9SliceUpdateSystem : ISystem
+    public class Mesh9SliceUpdateSystem : ISystem, IDisposable
     {
         private readonly Dictionary<Entity, Vector3> lastWorldScales;
 
@@ -18,17 +18,14 @@ namespace Meshes.NineSliced.Systems
             lastWorldScales = new(4);
         }
 
-        public readonly void Dispose()
+        public void Dispose()
         {
             lastWorldScales.Dispose();
         }
 
-        readonly void ISystem.Start(in SystemContext context, in World world)
+        void ISystem.Update(Simulator simulator, double deltaTime)
         {
-        }
-
-        readonly void ISystem.Update(in SystemContext context, in World world, in TimeSpan delta)
-        {
+            World world = simulator.world;
             ComponentQuery<IsMesh, Mesh9SliceSettings, LocalToWorld> query = new(world);
             foreach (var r in query)
             {
@@ -54,10 +51,6 @@ namespace Meshes.NineSliced.Systems
                     entity.As<Mesh9Sliced>().UpdateVerticesAndUVs(settings.geometryMargins, settings.uvMargins, worldScale);
                 }
             }
-        }
-
-        readonly void ISystem.Finish(in SystemContext context, in World world)
-        {
         }
     }
 }

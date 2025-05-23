@@ -1,6 +1,7 @@
 ﻿using Meshes.NineSliced.Systems;
 using Meshes.Tests;
 using Simulation;
+using System;
 using System.Numerics;
 using Transforms;
 using Transforms.Systems;
@@ -13,7 +14,6 @@ namespace Meshes.NineSliced.Tests
     {
         static SlicedMeshTests()
         {
-            MetadataRegistry.Load<SimulationMetadataBank>();
             MetadataRegistry.Load<TransformsMetadataBank>();
             MetadataRegistry.Load<MeshesNineSlicedMetadataBank>();
         }
@@ -21,7 +21,6 @@ namespace Meshes.NineSliced.Tests
         protected override Schema CreateSchema()
         {
             Schema schema = base.CreateSchema();
-            schema.Load<SimulationSchemaBank>();
             schema.Load<TransformsSchemaBank>();
             schema.Load<MeshesNineSlicedSchemaBank>();
             return schema;
@@ -37,8 +36,8 @@ namespace Meshes.NineSliced.Tests
 
             Mesh mesh = slicedMesh;
             int vertexCount = mesh.VertexCount;
-            Mesh.Collection<Vector3> positions = mesh.Positions;
-            Mesh.Collection<Vector2> uvs = mesh.UVs;
+            Span<Vector3> positions = mesh.Positions;
+            Span<Vector2> uvs = mesh.UVs;
 
             //first row
             AssertVectorEquality(positions[0], new Vector3(0f, 0f, 0f));
@@ -89,8 +88,8 @@ namespace Meshes.NineSliced.Tests
             Mesh mesh = new Mesh9Sliced(world, new(0.1f), new(Third));
 
             int vertexCount = mesh.VertexCount;
-            Mesh.Collection<Vector3> positions = mesh.Positions;
-            Mesh.Collection<Vector2> uvs = mesh.UVs;
+            Span<Vector3> positions = mesh.Positions;
+            Span<Vector2> uvs = mesh.UVs;
 
             //first row
             AssertVectorEquality(positions[0], new Vector3(0f, 0f, 0f));
@@ -138,8 +137,8 @@ namespace Meshes.NineSliced.Tests
         {
             using World world = CreateWorld();
             using Simulator simulator = new(world);
-            simulator.AddSystem(new TransformSystem());
-            simulator.AddSystem(new Mesh9SliceUpdateSystem());
+            simulator.Add(new TransformSystem());
+            simulator.Add(new Mesh9SliceUpdateSystem());
 
             Mesh9Sliced slicedMesh = new(world, new(0.5f, 0.5f, 0.5f, 0.5f), new(0.5f, 0.5f, 0.5f, 0.5f));
             Transform meshTransform = slicedMesh.Become<Transform>();
@@ -152,8 +151,8 @@ namespace Meshes.NineSliced.Tests
 
             Mesh mesh = slicedMesh;
             int vertexCount = mesh.VertexCount;
-            Mesh.Collection<Vector3> positions = mesh.Positions;
-            Mesh.Collection<Vector2> uvs = mesh.UVs;
+            Span<Vector3> positions = mesh.Positions;
+            Span<Vector2> uvs = mesh.UVs;
 
             AssertVectorEquality(positions[0], new Vector3(0f, 0f, 0f));
             AssertVectorEquality(positions[1], new Vector3(0.125f, 0f, 0f));
@@ -190,6 +189,9 @@ namespace Meshes.NineSliced.Tests
             AssertVectorEquality(uvs[13], new Vector2(0.5f, 1f));
             AssertVectorEquality(uvs[14], new Vector2(0.5f, 1f));
             AssertVectorEquality(uvs[15], new Vector2(1f, 1f));
+
+            simulator.Remove<Mesh9SliceUpdateSystem>();
+            simulator.Remove<TransformSystem>();
         }
 
         private static void AssertVectorEquality(Vector3 actual, Vector3 expected)
