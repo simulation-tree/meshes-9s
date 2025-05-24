@@ -136,8 +136,8 @@ namespace Meshes.NineSliced.Tests
         public void ScaledDefaultSlicedMesh()
         {
             using World world = CreateWorld();
-            using Simulator simulator = new(world);
-            simulator.Add(new TransformSystem());
+            Simulator simulator = new(world);
+            simulator.Add(new TransformSystem(simulator));
             simulator.Add(new Mesh9SliceUpdateSystem());
 
             Mesh9Sliced slicedMesh = new(world, new(0.5f, 0.5f, 0.5f, 0.5f), new(0.5f, 0.5f, 0.5f, 0.5f));
