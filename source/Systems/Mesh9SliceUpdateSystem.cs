@@ -2,30 +2,31 @@
 using Meshes.Components;
 using Meshes.NineSliced.Components;
 using Simulation;
-using System;
 using System.Numerics;
 using Transforms.Components;
 using Worlds;
+using Worlds.Messages;
 
 namespace Meshes.NineSliced.Systems
 {
-    public class Mesh9SliceUpdateSystem : ISystem, IDisposable
+    public partial class Mesh9SliceUpdateSystem : SystemBase, IListener<Update>
     {
+        private readonly World world;
         private readonly Dictionary<Entity, Vector3> lastWorldScales;
 
-        public Mesh9SliceUpdateSystem()
+        public Mesh9SliceUpdateSystem(Simulator simulator, World world) : base(simulator)
         {
+            this.world = world;
             lastWorldScales = new(4);
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
             lastWorldScales.Dispose();
         }
 
-        void ISystem.Update(Simulator simulator, double deltaTime)
+        void IListener<Update>.Receive(ref Update message)
         {
-            World world = simulator.world;
             ComponentQuery<IsMesh, Mesh9SliceSettings, LocalToWorld> query = new(world);
             foreach (var r in query)
             {

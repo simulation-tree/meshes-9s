@@ -25,6 +25,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\meshes\tests\Meshes.Tests.csproj" />
+		<ProjectReference Include="..\..\simulation\tests\Simulation.Tests.csproj" />
 		<ProjectReference Include="..\..\transform-systems\source\Transforms.Systems.csproj" />
 		<ProjectReference Include="..\..\types\core\Types.Core.csproj" />
 		<ProjectReference Include="..\..\worlds\core\Worlds.Core.csproj" />
