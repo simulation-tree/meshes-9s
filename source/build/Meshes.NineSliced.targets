@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+    <ItemGroup Condition="'$(Configuration)' == 'Debug'">
+        <Reference Include="Meshes.NineSliced">
+            <HintPath>$(MSBuildThisFileDirectory)..\tools\debug\Meshes.NineSliced.dll</HintPath>
+            <Private>True</Private>
+        </Reference>
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(Configuration)' == 'Release'">
+        <Reference Include="Meshes.NineSliced">
+            <HintPath>$(MSBuildThisFileDirectory)..\tools\release\Meshes.NineSliced.dll</HintPath>
+            <Private>True</Private>
+        </Reference>
+    </ItemGroup>
+
+</Project>
