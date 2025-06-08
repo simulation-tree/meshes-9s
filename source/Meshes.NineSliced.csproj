@@ -12,7 +12,7 @@
     <Company>simulation-tree</Company>
     <RepositoryUrl>https://github.com/simulation-tree/meshes-9s</RepositoryUrl>
     <IncludeBuildOutput>false</IncludeBuildOutput>
-    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+    <OutDir>bin/$(TargetFramework)/$(Configuration)</OutDir>
   </PropertyGroup>
 
   <ItemGroup>
@@ -35,11 +35,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="bin/Debug/net9.0/Meshes.NineSliced.dll" Pack="true" PackagePath="tools/debug/Meshes.NineSliced.dll" Visible="false"/>
-    <Content Include="bin/Debug/net9.0/Meshes.NineSliced.xml" Pack="true" PackagePath="tools/debug/Meshes.NineSliced.xml" Visible="false" Condition="Exists('bin/Debug/net9.0/Meshes.NineSliced.xml')"/>
-    <Content Include="bin/Release/net9.0/Meshes.NineSliced.dll" Pack="true" PackagePath="tools/release/Meshes.NineSliced.dll" Visible="false"/>
-    <Content Include="bin/Release/net9.0/Meshes.NineSliced.xml" Pack="true" PackagePath="tools/release/Meshes.NineSliced.xml" Visible="false" Condition="Exists('bin/Release/net9.0/Meshes.NineSliced.xml')"/>
-    <Content Include="build/Meshes.NineSliced.targets" Pack="true" PackagePath="build/Meshes.NineSliced.targets" Visible="false"/>
+    <Content Include="bin/**/*" Pack="true" PackagePath="lib" Visible="false"/>
+    <Content Include="buildTransitive/**/*" Pack="true" PackagePath="buildTransitive"/>
   </ItemGroup>
 
 </Project>
