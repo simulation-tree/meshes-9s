@@ -3,7 +3,7 @@
 
     <ItemGroup>
         <Reference Include="Meshes.NineSliced">
-            <HintPath>$(MSBuildThisFileDirectory)..\lib\net9.0\$(Configuration)\Meshes.NineSliced.dll</HintPath>
+            <HintPath>$(MSBuildThisFileDirectory)..\lib\$(TargetFramework)\$(Configuration)\Meshes.NineSliced.dll</HintPath>
         </Reference>
     </ItemGroup>
 
