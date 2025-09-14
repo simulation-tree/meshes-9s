@@ -9,7 +9,7 @@
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
     <Title>Meshes Nine Sliced</Title>
     <Authors>popcron</Authors>
-    <Company>simulation-tree</Company>
+    <Company>Simulation Tree</Company>
     <RepositoryUrl>https://github.com/simulation-tree/meshes-9s</RepositoryUrl>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <OutDir>bin/$(TargetFramework)/$(Configuration)</OutDir>
