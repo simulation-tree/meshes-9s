@@ -13,6 +13,7 @@
     <RepositoryUrl>https://github.com/simulation-tree/meshes-9s</RepositoryUrl>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <OutDir>bin/$(TargetFramework)/$(Configuration)</OutDir>
+    <PackageId>SimulationTree.Meshes.NineSliced</PackageId>
   </PropertyGroup>
 
   <ItemGroup>
